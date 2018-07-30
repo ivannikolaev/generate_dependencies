@@ -17,9 +17,9 @@ files.each { jarFile ->
         def pom = zipFile.entries().find {
             !it.directory && it.name.toLowerCase().endsWith("/pom.properties")
         } as ZipEntry
-        Properties props = new Properties()
-        props.load(zipFile.getInputStream(pom))
         if (pom != null) {
+            Properties props = new Properties()
+            props.load(zipFile.getInputStream(pom))
             dependency {
                 groupId props.getProperty("groupId")
                 artifactId props.getProperty("artifactId")
