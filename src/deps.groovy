@@ -11,9 +11,9 @@ def files = folder.listFiles({ File dir, String name -> name.toLowerCase().endsW
 def pomWriter = new FileWriter("dependencies.txt")
 def noPomWriter = new FileWriter("nopom.txt")
 def xml = new MarkupBuilder(pomWriter)
-files.each { jarFile ->
-    def zipFile = new ZipFile(jarFile)
-    xml.dependencies {
+xml.dependencies {
+    files.each { jarFile ->
+        def zipFile = new ZipFile(jarFile)
         def pom = zipFile.entries().find {
             !it.directory && it.name.toLowerCase().endsWith("/pom.properties")
         } as ZipEntry
@@ -26,7 +26,7 @@ files.each { jarFile ->
                 version props.getProperty("version")
             }
         } else {
-            noPomWriter.write(jarFile.name)
+            noPomWriter.write(jarFile.name + "\n")
         }
     }
 }
